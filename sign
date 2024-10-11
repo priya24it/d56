@@ -1,0 +1,35 @@
+import re
+
+# Initial dictionary with NumValue and SignValue
+data = {
+    "A": {"NumValue": "0", "SignValue": 1},
+    "B": {"NumValue": "1", "SignValue": 1},
+    "C": {"NumValue": "2", "SignValue": 1}
+}
+
+# Function to process and update the SignValue based on incoming value
+def update_sign_value(incoming_value, data_dict):
+    """
+    This function updates the 'SignValue' in the data_dict based on the incoming_value.
+    It expects the incoming_value to be a combination of letters and digits (e.g., 'A12345').
+    """
+    # Use regular expression to separate the letters and digits
+    letter_part = re.match(r'[A-Za-z]+', incoming_value).group(0)  # Extract the letter part
+    
+    # Update the corresponding SignValue if the letter part matches any key
+    if letter_part in data_dict:
+        # Apply the logic to update the 'SignValue'
+        # Example: Flip the sign (i.e., multiply by -1)
+        data_dict[letter_part]["SignValue"] *= -1  # Negate the current sign value (1 -> -1, -1 -> 1)
+
+    return data_dict
+
+# Incoming values to process (a combination of letters and digits)
+incoming_values = ["A1234654", "B987654", "C654321"]
+
+# Process each incoming value and update the SignValue
+for incoming_value in incoming_values:
+    data = update_sign_value(incoming_value, data)
+
+# Output the updated dictionary
+print("Updated Data:", data)
