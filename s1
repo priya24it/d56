@@ -1,0 +1,41 @@
+import re
+
+# Initial dictionary with NumValue and SignValue
+data = {
+    "A": {"NumValue": "0", "SignValue": 1},
+    "B": {"NumValue": "1", "SignValue": 1},
+    "C": {"NumValue": "2", "SignValue": 1},
+    "{": {"NumValue": "0", "SignValue": 1},
+    "}": {"NumValue": "0", "SignValue": -1}
+}
+
+# Function to process and return the modified value based on SignValue
+def process_value(incoming_value, data_dict):
+    """
+    This function returns the modified value based on the incoming_value's letter and the corresponding SignValue.
+    """
+    # Extract the letter or special character part
+    letter_part = re.match(r'[A-Za-z{}]+', incoming_value).group(0)
+    
+    # Extract the number part
+    number_part = re.search(r'\d+', incoming_value).group(0)
+    
+    # Check if the letter part exists in the dictionary
+    if letter_part in data_dict:
+        sign_value = data_dict[letter_part]["SignValue"]
+        # Apply the sign to the number part
+        return f"{letter_part}{str(sign_value * int(number_part))}"
+    else:
+        return incoming_value  # If no match, return the original value
+
+# Incoming values to process
+incoming_values = ["A1234654", "B987654", "C654321", "{456789", "}123456"]
+
+# Process each incoming value and return the final value
+processed_values = []
+for incoming_value in incoming_values:
+    processed_value = process_value(incoming_value, data)
+    processed_values.append(processed_value)
+
+# Output the list of processed values
+processed_values
